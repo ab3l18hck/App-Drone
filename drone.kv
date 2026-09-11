@@ -1,0 +1,461 @@
+<RoundedButton@Button>:
+
+    background_color: 0, 0, 0, 0
+    background_normal: ''
+
+    canvas.before:
+
+        Color:
+            rgba: (0.1, 0.3, 1, 1) if self.state == 'normal' else (0.05, 0.15, 0.6, 1)
+
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [25]
+
+
+<RoundedBtn@Button>:
+
+    background_color: 0, 0, 0, 0
+    background_normal: ''
+
+    canvas.before:
+
+        Color:
+            rgba: (0, 0.3, 0.7, 1) if self.state == 'normal' else (0, 0.3, 0.7, 0.5)
+
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [40]
+
+
+<RoundedBtnTakeOff@Button>:
+
+    background_color: 0, 0, 0, 0
+    background_normal: ''
+
+    canvas.before:
+
+        Color:
+            rgba: (0, 0.2, 1, 1) if self.state == 'normal' else (0, 0.3, 1, 0.7)
+
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [25]
+
+
+<RoundedBtnLand@Button>:
+
+    background_color: 0, 0, 0, 0
+    background_normal: ''
+
+    canvas.before:
+
+        Color:
+            rgba: (1, 0, 0, 1) if self.state == 'normal' else (1, 0, 0, 0.6)
+
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [25]
+
+
+<RoundedBtnInsp@Button>:
+
+    background_color: 0, 0, 0, 0
+    background_normal: ''
+
+    canvas.before:
+
+        Color:
+            rgba: (0.3, 0.7, 0, 1) if self.state == 'normal' else (0.3, 0.7, 0, 0.6)
+
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [50]
+<Conexion>:
+
+    RelativeLayout:
+
+        padding: 20
+
+
+        Label:
+
+            id: label_info
+
+            text: 'paso [1]: Conectate al Wi-Fi del dron\n\nPaso [2]: Pulse el botón para continuar'
+
+            font_size: '18sp'
+
+            halign: 'center'
+
+            valign: 'middle'
+
+            text_size: self.size
+
+            size_hint: 1, 0.3
+
+            pos_hint: {'center_x': 0.5, 'center_y': 0.65}
+
+
+        RoundedButton:
+
+            id: button_control
+
+            text: 'Conectar'
+
+            size_hint: 0.4, 0.1
+
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+
+            on_release: root.intentar_conectar()
+
+
+# ============================================================
+# CONTROLES
+# ============================================================
+
+<Controles>:
+
+    RelativeLayout:
+
+
+        # ====================================================
+        # CÁMARA
+        # ====================================================
+
+        Image:
+
+            id: camara_dron
+
+            allow_stretch: True
+
+            keep_ratio: True
+
+            size_hint: 1, 0.48
+
+            pos_hint: {'x': 0, 'top': 0.95}
+
+
+        # ====================================================
+        # MENSAJE
+        # ====================================================
+
+        Label:
+
+            id: label_objeto
+
+            text: ''
+
+            opacity: 0
+
+            disabled: True
+
+            size_hint: 0.92, 0.15
+
+            pos_hint: {'center_x': 0.5, 'top': 0.82}
+
+            font_size: '21sp'
+
+            bold: True
+
+            color: 1, 1, 1, 1
+
+            halign: 'center'
+
+            valign: 'middle'
+
+            text_size: self.size
+
+            # Fondo del mensaje
+            canvas.before:
+
+                Color:
+
+                    rgba: (0, 0, 0, 0.78)
+
+                RoundedRectangle:
+
+                    pos: self.pos
+
+                    size: self.size
+
+                    radius: [20]
+
+
+        # ====================================================
+        # BATERÍA
+        # ====================================================
+
+        BoxLayout:
+
+            orientation: 'horizontal'
+
+            size_hint: 1, 0.05
+
+            pos_hint: {'x': 0, 'top': 1}
+
+            padding: 10, 5
+
+
+            Label:
+
+                id: label_battery
+
+                text: 'Battery: 100%'
+
+                bold: True
+
+                font_size: '18sp'
+
+                color: 0, 1, 0.2, 1
+
+                halign: 'right'
+
+                valign: 'middle'
+
+                text_size: self.size
+
+
+        # ====================================================
+        # CONTROLES INFERIORES
+        # ====================================================
+
+        BoxLayout:
+
+            orientation: 'horizontal'
+
+            size_hint: 1, 0.47
+
+            pos_hint: {'x': 0, 'y': 0}
+
+            padding: 10
+
+            spacing: 15
+
+
+            # =================================================
+            # MANDO DIRECCIONAL
+            # =================================================
+
+            GridLayout:
+
+                cols: 3
+
+                rows: 3
+
+                spacing: 5
+
+                size_hint_x: 0.5
+
+
+                Label:
+
+
+                RoundedBtn:
+
+                    id: btn_forward
+
+                    text: 'F'
+
+                    font_size: '26sp'
+
+                    bold: True
+
+                    on_press: root.mover_dron(fb=root.velocidad)
+
+                    on_release: root.detener_dron()
+
+
+                Label:
+
+
+                RoundedBtn:
+
+                    id: btn_left
+
+                    text: '<'
+
+                    font_size: '26sp'
+
+                    bold: True
+
+                    on_press: root.mover_dron(lr=-root.velocidad)
+
+                    on_release: root.detener_dron()
+
+
+                Label:
+
+
+                RoundedBtn:
+
+                    id: btn_right
+
+                    text: '>'
+
+                    font_size: '26sp'
+
+                    bold: True
+
+                    on_press: root.mover_dron(lr=root.velocidad)
+
+                    on_release: root.detener_dron()
+
+
+                Label:
+
+
+                RoundedBtn:
+
+                    id: btn_back
+
+                    text: 'B'
+
+                    font_size: '26sp'
+
+                    bold: True
+
+                    on_press: root.mover_dron(fb=-root.velocidad)
+
+                    on_release: root.detener_dron()
+
+
+                Label:
+
+
+            # =================================================
+            # COLUMNA DERECHA
+            # =================================================
+
+            BoxLayout:
+
+                orientation: 'vertical'
+
+                size_hint_x: 0.5
+
+                spacing: 8
+
+
+                # =============================================
+                # DESPEGAR / ATERRIZAR
+                # =============================================
+
+                BoxLayout:
+
+                    orientation: 'horizontal'
+
+                    spacing: 8
+
+                    size_hint_y: 0.25
+
+
+                    RoundedBtnTakeOff:
+
+                        id: btn_takeof
+
+                        text: 'Despegar'
+
+                        font_size: '15sp'
+
+                        bold: True
+
+                        on_release: root.despegar()
+
+
+                    RoundedBtnLand:
+
+                        id: btn_atterizar
+
+                        text: 'Aterrizar'
+
+                        font_size: '15sp'
+
+                        bold: True
+
+                        on_release: root.aterrizar()
+
+
+                # =============================================
+                # UP / DOWN
+                # =============================================
+
+                BoxLayout:
+
+                    orientation: 'horizontal'
+
+                    spacing: 8
+
+                    size_hint_y: 0.25
+
+
+                    RoundedBtn:
+
+                        id: btn_up
+
+                        text: 'UP'
+
+                        font_size: '16sp'
+
+                        bold: True
+
+                        on_press: root.mover_dron(ud=root.velocidad)
+
+                        on_release: root.detener_dron()
+
+
+                    RoundedBtn:
+
+                        id: btn_down
+
+                        text: 'Down'
+
+                        font_size: '16sp'
+
+                        bold: True
+
+                        on_press: root.mover_dron(ud=-root.velocidad)
+
+                        on_release: root.detener_dron()
+
+
+                # =============================================
+                # ROTAR
+                # =============================================
+
+                RoundedBtn:
+
+                    id: btn_rotate
+
+                    text: 'Rotate 90º'
+
+                    font_size: '16sp'
+
+                    bold: True
+
+                    size_hint_y: 0.25
+
+                    on_release: root.rotar()
+
+
+                # =============================================
+                # INSPECCIONAR
+                # =============================================
+
+                RoundedBtnInsp:
+
+                    id: btn_insp
+
+                    text: 'Inspeccionar'
+
+                    font_size: '17sp'
+
+                    bold: True
+
+                    size_hint_y: 0.25
+
+                    on_release: root.inspeccionar()
