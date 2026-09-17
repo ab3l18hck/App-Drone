@@ -17,14 +17,9 @@ Window.size = (360, 640)
 Config.set('graphics', 'resizable', False)
 
 
-<<<<<<< HEAD
 
-# PANTALLA DE CONNEXIÓ
-
-=======
-# ============================================================
 # PANTALLA DE CONEXIÓN
->>>>>>> 5db837c (add pruebas)
+
 
 class Conexion(Screen):
 
